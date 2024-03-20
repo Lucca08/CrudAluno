@@ -1,17 +1,17 @@
 package com.example.CrudAlunos.service.AlunoService.CadastrarAluno;
 
-import java.util.logging.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.CrudAlunos.dto.AlunoDTO;
 import com.example.CrudAlunos.model.Aluno;
 import com.example.CrudAlunos.model.Curso;
 import com.example.CrudAlunos.repository.AlunoRepository;
-import com.example.CrudAlunos.service.CursoService.CursoService;
+import com.example.CrudAlunos.repository.CursoRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class CadastrarAlunoService {
@@ -22,20 +22,26 @@ public class CadastrarAlunoService {
     private AlunoRepository alunoRepository;
 
     @Autowired
-    private CursoService cursoService;
+    private CursoRepository cursoRepository;
 
     @Transactional
-    public Aluno cadastrarAlunoNoCurso(AlunoDTO alunoDTO) {
-        Aluno aluno = alunoRepository.findById(alunoDTO.getId()).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
-        Curso curso = cursoService.encontrarCursoPorId(alunoDTO.getIdCurso());  
+    public Aluno cadastrarAlunoNoCurso(AlunoDTO alunoDTO, Long idCurso) throws Exception {
+        Optional<Curso> cursoOptional = cursoRepository.findById(idCurso);
+        if (cursoOptional.isEmpty()) {
+            throw new Exception("Curso não encontrado");
+        }
 
-        logger.info("Cadastrando aluno no curso: " + aluno.getNome() + " no curso: " + curso.getNome());
+        Curso curso = cursoOptional.get();
 
-        curso.getAlunos().add(aluno);
-        cursoService.atualizarCurso(curso);
-    
-        return aluno;
+        Aluno aluno = new Aluno();
+        aluno.setNome(alunoDTO.getNome());
+
+        aluno.setCurso(curso);
+
+        Aluno alunoCadastrado = alunoRepository.save(aluno);
+
+        logger.info("Aluno cadastrado com sucesso no curso: " + curso.getNome());
+
+        return alunoCadastrado;
     }
-    
-  
 }

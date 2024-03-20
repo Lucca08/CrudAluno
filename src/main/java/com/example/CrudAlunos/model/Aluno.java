@@ -27,6 +27,8 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    private Curso curso;
+    
     @Column
     private String nome;
     

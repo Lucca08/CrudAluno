@@ -1,4 +1,4 @@
-package com.example.CrudAlunos.service.AlunoService.VerSeAlunoEstaCadastrado;
+package com.example.CrudAlunos.service.AlunoService.VerificarCadastroAluno;
 
 import java.util.logging.Logger;
 
@@ -10,7 +10,8 @@ import com.example.CrudAlunos.dto.CursoDTO;
 import com.example.CrudAlunos.model.Aluno;
 import com.example.CrudAlunos.model.Curso;
 import com.example.CrudAlunos.repository.AlunoRepository;
-import com.example.CrudAlunos.service.CursoService.CursoService;
+import com.example.CrudAlunos.repository.CursoRepository;
+
 
 @Service
 public class VerificarCadastroAlunoService {
@@ -21,14 +22,14 @@ public class VerificarCadastroAlunoService {
     private AlunoRepository alunoRepository;
 
     @Autowired
-    private CursoService cursoService;
+    private CursoRepository cursoRepository;
 
     public boolean verificarSeAlunoEstaCadastrado(AlunoDTO alunoDTO, CursoDTO cursoDTO) {
         try {
             Aluno aluno = alunoRepository.findById(alunoDTO.getId())
                                          .orElseThrow(() -> new RuntimeException("Aluno não encontrado com o ID: " + alunoDTO.getId()));
 
-            Curso curso = cursoService.encontrarCursoPorId(cursoDTO.getId())
+            Curso curso = cursoRepository.findById(cursoDTO.getId())
                                      .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + cursoDTO.getId()));
 
             boolean alunoCadastrado = curso.getAlunos().contains(aluno);

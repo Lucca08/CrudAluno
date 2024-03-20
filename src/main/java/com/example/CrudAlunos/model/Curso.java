@@ -40,7 +40,7 @@ public class Curso {
     @JoinColumn(name = "professor_id")
     private Professor professor;
 
-    @JoinTable
+    
     @ManyToMany(mappedBy = "cursos")
     private Set<Aluno> alunos = new HashSet<>();
 
