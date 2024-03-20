@@ -31,6 +31,9 @@ public class Curso {
     
     @Column
     private String nome;
+
+    @Column
+    private String descricao;
     
     @JsonIgnore
     @ManyToOne

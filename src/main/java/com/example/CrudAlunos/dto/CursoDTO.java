@@ -11,4 +11,5 @@ public class CursoDTO {
     private Long id;
     private String nome;
     private ProfessorDTO professor;
+    private String descricao;
 }

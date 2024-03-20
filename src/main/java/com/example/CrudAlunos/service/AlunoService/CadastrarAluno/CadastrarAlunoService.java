@@ -14,9 +14,9 @@ import com.example.CrudAlunos.service.CursoService.CursoService;
 import jakarta.transaction.Transactional;
 
 @Service
-public class CadastrarAluno {
+public class CadastrarAlunoService {
 
-    private static final Logger logger = Logger.getLogger(CadastrarAluno.class.getName());
+    private static final Logger logger = Logger.getLogger(CadastrarAlunoService.class.getName());
 
     @Autowired
     private AlunoRepository alunoRepository;
