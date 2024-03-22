@@ -35,37 +35,28 @@ public class BuscarCadastroServiceTest {
 
         Curso curso = StubCurso.createCursoStub();
 
-        // Adicionar o curso ao aluno
         aluno.getCursos().add(curso);
 
-        // Simular comportamento do repositório ao buscar pelo aluno
         when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
 
-        // Verificar se o aluno está cadastrado no curso com ID 1
         assertTrue(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(1L), 1L));
     }
 
     @Test
     public void testVerificarAlunoNoCurso_AlunoNaoPresenteNoCurso() {
-        // Criar um aluno stub com ID 1
         Aluno aluno = StubAlunos.AlunoStub1();
 
-        // Criar um curso stub com ID 1
         Curso curso = StubCurso.createCursoStub();
 
-        // Simular comportamento do repositório ao buscar pelo aluno
         when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
 
-        // Verificar se o aluno está cadastrado no curso com ID 2
         assertFalse(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(1L), 2L));
     }
 
     @Test
     public void testVerificarAlunoNoCurso_AlunoNaoEncontrado() {
-        // Simular comportamento do repositório ao buscar pelo aluno
         when(alunoRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Verificar se o aluno está cadastrado no curso com ID 1
         assertFalse(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(1L), 1L));
     }
 }

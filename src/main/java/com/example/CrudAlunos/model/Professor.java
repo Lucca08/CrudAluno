@@ -25,6 +25,8 @@ public class Professor {
     @Column(nullable = false)
     private String nome;
 
+    
+
 
 
 }

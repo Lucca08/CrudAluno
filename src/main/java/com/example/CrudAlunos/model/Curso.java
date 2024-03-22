@@ -45,11 +45,7 @@ public class Curso {
     private Professor professor;
     
     @ManyToMany
-    @JoinTable(
-        name = "ALUNO_CURSO",
-        joinColumns = @JoinColumn(name = "curso_id"),
-        inverseJoinColumns = @JoinColumn(name = "aluno_id")
-    )
+    @JoinTable(name = "ALUNO_CURSO",joinColumns = @JoinColumn(name = "curso_id"),inverseJoinColumns = @JoinColumn(name = "aluno_id"))
     private List<Aluno> alunos = new ArrayList<>();
     
  
