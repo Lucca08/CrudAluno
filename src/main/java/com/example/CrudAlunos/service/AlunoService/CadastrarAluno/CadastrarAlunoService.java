@@ -7,10 +7,10 @@ import com.example.CrudAlunos.repository.AlunoRepository;
 import com.example.CrudAlunos.repository.CursoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -19,14 +19,17 @@ public class CadastrarAlunoService {
 
     private static final Logger logger = Logger.getLogger(CadastrarAlunoService.class.getName());
 
-    @Autowired
-    private AlunoRepository alunoRepository;
+    private final AlunoRepository alunoRepository;
+    private final CursoRepository cursoRepository;
 
     @Autowired
-    private CursoRepository cursoRepository;
+    public CadastrarAlunoService(AlunoRepository alunoRepository, CursoRepository cursoRepository) {
+        this.alunoRepository = alunoRepository;
+        this.cursoRepository = cursoRepository;
+    }
 
     @Transactional
-    public Aluno cadastrarAlunoNoCurso(AlunoDTO alunoDTO, Long idCurso) throws Exception{
+    public Aluno cadastrarAlunoNoCurso(AlunoDTO alunoDTO, Long idCurso) throws Exception {
         Optional<Curso> cursoOptional = cursoRepository.findById(idCurso);
         if (cursoOptional.isEmpty()) {
             throw new Exception("Curso não encontrado");
@@ -37,8 +40,12 @@ public class CadastrarAlunoService {
         Aluno aluno = new Aluno();
         aluno.setNome(alunoDTO.getNome());
 
-        curso.getAlunos().add(aluno); 
-        aluno.getCursos().add(curso); 
+        if (curso.getAlunos() == null) {
+            curso.setAlunos(new ArrayList<>());
+        }
+
+        curso.getAlunos().add(aluno);
+        aluno.getCursos().add(curso);
 
         Aluno alunoCadastrado = alunoRepository.save(aluno);
 

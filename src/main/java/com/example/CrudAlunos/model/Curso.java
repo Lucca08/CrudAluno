@@ -1,5 +1,6 @@
 package com.example.CrudAlunos.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
@@ -24,6 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Curso {
     
@@ -44,11 +46,11 @@ public class Curso {
     
     @ManyToMany
     @JoinTable(
-        name = "curso_aluno",
+        name = "ALUNO_CURSO",
         joinColumns = @JoinColumn(name = "curso_id"),
         inverseJoinColumns = @JoinColumn(name = "aluno_id")
     )
-    private List<Aluno> alunos;
-
-
+    private List<Aluno> alunos = new ArrayList<>();
+    
+ 
 }

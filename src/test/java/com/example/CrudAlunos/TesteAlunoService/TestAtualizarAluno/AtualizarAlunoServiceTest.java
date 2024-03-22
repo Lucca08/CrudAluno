@@ -1,4 +1,5 @@
-package com.example.CrudAlunos.TestBuscarSeAlunoEstaCadastrado;
+package com.example.CrudAlunos.TesteAlunoService.TestAtualizarAluno; 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -16,6 +17,7 @@ import com.example.CrudAlunos.dto.AlunoDTO;
 import com.example.CrudAlunos.model.Aluno;
 import com.example.CrudAlunos.repository.AlunoRepository;
 import com.example.CrudAlunos.service.AlunoService.AtualizarAluno.AtualizarAlunoService;
+import com.example.CrudAlunos.Stub.StubAlunos; 
 
 @ExtendWith(MockitoExtension.class)
 public class AtualizarAlunoServiceTest {
@@ -26,17 +28,14 @@ public class AtualizarAlunoServiceTest {
     @InjectMocks
     private AtualizarAlunoService atualizarAlunoService;
 
-    @DisplayName("Teste de atualizacao de aluno")
+    @DisplayName("Teste de atualização de aluno")
     @Test
     public void testAtualizarAluno() {
-        
+        Aluno alunoExistente = StubAlunos.AlunoStub1(); 
+
         AlunoDTO alunoDTO = new AlunoDTO();
         alunoDTO.setId(1L);
         alunoDTO.setNome("Novo Nome");
-
-        Aluno alunoExistente = new Aluno();
-        alunoExistente.setId(1L);
-        alunoExistente.setNome("Nome Antigo");
 
         when(alunoRepository.findById(1L)).thenReturn(Optional.of(alunoExistente));
         when(alunoRepository.save(any(Aluno.class))).thenAnswer(invocation -> {
@@ -46,7 +45,6 @@ public class AtualizarAlunoServiceTest {
         });
 
         Aluno alunoAtualizado = atualizarAlunoService.atualizarAluno(alunoDTO);
-
         assertEquals(alunoDTO.getNome(), alunoAtualizado.getNome());
     }
 }

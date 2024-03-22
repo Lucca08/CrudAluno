@@ -33,10 +33,17 @@ public class Aluno {
     
     @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false, length = 11, unique = true)
+    private String cpf;
+
+    @Column(nullable = false, unique = true)
+    private String matricula;
     
     @JoinTable(name = "aluno_curso", joinColumns = @JoinColumn(name = "aluno_id"), inverseJoinColumns = @JoinColumn(name = "curso_id"))
     @ManyToMany
-    private List<Curso> cursos;
+    private List<Curso> cursos = new ArrayList<>();
+    
     
 
 

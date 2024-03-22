@@ -25,4 +25,8 @@ public class AlunoDTO {
                                         .collect(Collectors.toList());
     }
 
+    public AlunoDTO(Long id) {
+        this.id = id;
+    }
+
 }

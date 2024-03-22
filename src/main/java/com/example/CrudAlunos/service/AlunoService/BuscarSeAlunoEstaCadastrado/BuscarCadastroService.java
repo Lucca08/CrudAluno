@@ -16,6 +16,11 @@ public class BuscarCadastroService {
     @Autowired
     private AlunoRepository alunoRepository;
 
+    @Autowired
+    public BuscarCadastroService(AlunoRepository alunoRepository) {
+        this.alunoRepository = alunoRepository;
+    }   
+
     public boolean verificarAlunoNoCurso(AlunoDTO alunoDTO, Long idCurso) {
         Optional<Aluno> optionalAluno = alunoRepository.findById(alunoDTO.getId());
         
