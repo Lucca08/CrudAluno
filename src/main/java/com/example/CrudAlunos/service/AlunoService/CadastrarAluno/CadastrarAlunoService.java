@@ -7,6 +7,7 @@ import com.example.CrudAlunos.repository.AlunoRepository;
 import com.example.CrudAlunos.repository.CursoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class CadastrarAlunoService {
     private CursoRepository cursoRepository;
 
     @Transactional
-    public Aluno cadastrarAlunoNoCurso(AlunoDTO alunoDTO, Long idCurso) throws Exception {
+    public Aluno cadastrarAlunoNoCurso(AlunoDTO alunoDTO, Long idCurso) throws Exception{
         Optional<Curso> cursoOptional = cursoRepository.findById(idCurso);
         if (cursoOptional.isEmpty()) {
             throw new Exception("Curso não encontrado");
@@ -36,7 +37,8 @@ public class CadastrarAlunoService {
         Aluno aluno = new Aluno();
         aluno.setNome(alunoDTO.getNome());
 
-        aluno.setCurso(curso);
+        curso.getAlunos().add(aluno); 
+        aluno.getCursos().add(curso); 
 
         Aluno alunoCadastrado = alunoRepository.save(aluno);
 

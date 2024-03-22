@@ -10,13 +10,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
-    void salvarProfessor(Professor professor);
-    void atualizarProfessor(Professor professor);
-    void excluirProfessor(Long idProfessor);
-    public Optional<Professor> findById(Long id);
-    List<Professor> encontrarTodosOsProfessores();
-    boolean professorEstaCadastrado(Long idProfessor);
+    // Método para buscar um professor pelo ID
+    Optional<Professor> findById(Long id);
 
+    // Método para buscar todos os professores
+    List<Professor> findAll();
+
+    // Método para salvar um novo professor ou atualizar um existente
+    @SuppressWarnings("unchecked")
+    Professor save(Professor professor);
+
+    // Método para excluir um professor pelo ID
+    void deleteById(Long id);
 
 
 

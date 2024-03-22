@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ public class AtualizarAlunoServiceTest {
     @InjectMocks
     private AtualizarAlunoService atualizarAlunoService;
 
+    @DisplayName("Teste de atualização de aluno")
     @Test
     public void testAtualizarAluno() {
         

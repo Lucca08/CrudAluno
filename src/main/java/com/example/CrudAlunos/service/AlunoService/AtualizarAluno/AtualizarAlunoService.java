@@ -1,6 +1,8 @@
 package com.example.CrudAlunos.service.AlunoService.AtualizarAluno;
+
 import java.util.logging.Logger;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,8 @@ public class AtualizarAlunoService {
         Aluno aluno = alunoRepository.findById(alunoDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        aluno.setNome(alunoDTO.getNome());
+        // Copia as propriedades do DTO para o objeto Aluno existente
+        BeanUtils.copyProperties(alunoDTO, aluno);
 
         logger.info("Atualizando aluno: " + aluno.getNome());
 
