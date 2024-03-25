@@ -13,8 +13,6 @@ public class ProfessorDTO {
     private Long id;
     private String nome;
 
-  
-
     public ProfessorDTO(Professor professor) {
         this.id = professor.getId();
         this.nome = professor.getNome();

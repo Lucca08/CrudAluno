@@ -34,9 +34,9 @@ public class Aluno {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, length = 11, unique = true)
+    @Column(nullable = false, unique = true)
     private String cpf;
-
+    
     @Column(nullable = false, unique = true)
     private String matricula;
     

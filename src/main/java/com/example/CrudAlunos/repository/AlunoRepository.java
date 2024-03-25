@@ -12,15 +12,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
- // Encontrar aluno por nome
  List<Aluno> findByNome(String nome);
     
- // Encontrar aluno por parte do nome (ignorando maiúsculas e minúsculas)
  List<Aluno> findByNomeContainingIgnoreCase(String parteDoNome);
  
- // Encontrar aluno por parte do nome e por ID do curso
  List<Aluno> findByNomeContainingIgnoreCaseAndCursosId(String parteDoNome, Long idCurso);
  
- // Encontrar aluno por ID do curso
  List<Aluno> findByCursosId(Long idCurso);
+
+Object findByCursosId(int id);
 }

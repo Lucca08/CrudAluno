@@ -1,5 +1,5 @@
 package com.example.CrudAlunos.service.CursoService.VerTodosOsAlunosDoCurso;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -20,16 +20,17 @@ public class VerAlunosDoCursoService {
     private CursoRepository cursoRepository;
 
     public List<AlunoDTO> verAlunosDoCurso(Long idCurso) {
-        Curso curso = cursoRepository.findById(idCurso).orElseThrow(() -> new RuntimeException("Curso não encontrado com ID: " + idCurso));
+        Curso curso = cursoRepository.findById(idCurso).orElseThrow(() -> {
+            logger.warning("Não foi possível encontrar o curso com o ID: " + idCurso);
+            throw new RuntimeException("Não foi possível encontrar o curso com o ID: " + idCurso);
+        });
 
-        List<AlunoDTO> alunosDoCurso = curso.getAlunos().stream()
-                                                .map(AlunoDTO::new)
-                                                .collect(Collectors.toList());
-        
-        logger.info("Alunos do curso " + curso.getNome() + ": " + alunosDoCurso.size());
-        
-        return alunosDoCurso;
+        return curso.getAlunos().stream().map(aluno -> {
+            AlunoDTO alunoDTO = new AlunoDTO();
+            alunoDTO.setNome(aluno.getNome());
+            alunoDTO.setCpf(aluno.getCpf());
+            alunoDTO.setMatricula(aluno.getMatricula());
+            return alunoDTO;
+        }).collect(Collectors.toList());
     }
-   
 }
-

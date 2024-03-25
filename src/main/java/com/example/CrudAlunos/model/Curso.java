@@ -46,7 +46,14 @@ public class Curso {
     
     @ManyToMany
     @JoinTable(name = "ALUNO_CURSO",joinColumns = @JoinColumn(name = "curso_id"),inverseJoinColumns = @JoinColumn(name = "aluno_id"))
-    private List<Aluno> alunos = new ArrayList<>();
+    private List<Aluno> alunos;
     
+
+    public List<Aluno> getAlunos() {
+        if (alunos == null) {
+            alunos = new ArrayList<>();
+        }
+        return alunos;
+    }
  
 }

@@ -22,15 +22,40 @@ public class CriaCursoService {
     @Autowired
     private ProfessorRepository professorRepository;
 
-    public Curso criarCurso(CursoDTO cursoDTO, Long idProfessor) {
-        Professor professor = professorRepository.findById(idProfessor)
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado com ID: " + idProfessor));
+    public Curso criarCurso(CursoDTO cursoDTO) {
+        if (cursoDTO.getDescricao() == null || cursoDTO.getDescricao().isEmpty()) {
+            throw new IllegalArgumentException("Descrição do curso é obrigatória.");
+        }
 
+        if (cursoDTO.getProfessor() != null) {
+            if (cursoDTO.getProfessor().getId() != null) {
+                Professor professor = professorRepository.findById(cursoDTO.getProfessor().getId())
+                        .orElseThrow(() -> new RuntimeException(
+                                "Professor não encontrado com ID: " + cursoDTO.getProfessor().getId()));
+                return criarCursoComProfessor(cursoDTO, professor);
+            } else {
+                Professor novoProfessor = new Professor();
+                novoProfessor.setNome(cursoDTO.getProfessor().getNome());
+                Professor professorSalvo = professorRepository.save(novoProfessor);
+                return criarCursoComProfessor(cursoDTO, professorSalvo);
+            }
+        } else {
+            throw new RuntimeException("Professor não fornecido");
+        }
+    }
+
+    private Curso criarCursoComProfessor(CursoDTO cursoDTO, Professor professor) {
         Curso curso = new Curso();
+        curso.setId(cursoDTO.getId());
         curso.setNome(cursoDTO.getNome());
-        curso.setProfessor(professor); 
+        curso.setProfessor(professor);
+        curso.setDescricao(cursoDTO.getDescricao());
+        
 
-        logger.info("Criando curso com os dados: " + cursoDTO);
-        return cursoRepository.save(curso);
+        cursoRepository.save(curso);
+
+        logger.info("Curso criado com sucesso: " + curso.getNome());
+
+        return curso;
     }
 }

@@ -15,11 +15,15 @@ public class CursoDTO {
     private ProfessorDTO professor;
     private String descricao;
 
-
     public CursoDTO(Curso curso) {
         this.id = curso.getId();
         this.nome = curso.getNome();
-        this.professor = new ProfessorDTO(curso.getProfessor());
         this.descricao = curso.getDescricao();
+        
+        if (curso.getProfessor() != null) {
+            this.professor = new ProfessorDTO(curso.getProfessor());
+        } else {
+            this.professor = null;
+        }
     }
 }

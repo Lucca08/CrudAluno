@@ -1,5 +1,6 @@
 package com.example.CrudAlunos.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,18 +16,16 @@ import lombok.Setter;
 public class AlunoDTO {
     private Long id;
     private String nome;
-    private List<CursoDTO> cursos;
-    
+    private String cpf;
+    private String matricula;
+    private CursoDTO curso;
+
     public AlunoDTO(Aluno aluno) {
         this.id = aluno.getId();
         this.nome = aluno.getNome();
-        this.cursos = aluno.getCursos().stream()
-                                        .map(CursoDTO::new)
-                                        .collect(Collectors.toList());
-    }
-
-    public AlunoDTO(Long id) {
-        this.id = id;
+        this.cpf = aluno.getCpf();
+        this.matricula = aluno.getMatricula();
+        this.curso = new CursoDTO(aluno.getCursos().get(0));
     }
 
 }
