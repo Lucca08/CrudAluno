@@ -25,7 +25,7 @@ public class CadastrarAlunoService {
         aluno.setNome(alunoDTO.getNome());
         aluno.setCpf(alunoDTO.getCpf());
         aluno.setMatricula(alunoDTO.getMatricula());
-        
-        return alunoRepository.save(aluno);
+        System.out.println(alunoDTO.getCpf() + " " + aluno.getCpf());
+        return aluno;
     }
 }

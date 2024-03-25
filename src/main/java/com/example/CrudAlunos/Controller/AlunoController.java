@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,6 @@ import com.example.CrudAlunos.service.AlunoService.ExcluirAluno.ExcluirAlunoServ
 import com.example.CrudAlunos.service.AlunoService.SairDoCurso.SairDoCursoService;
 import com.example.CrudAlunos.service.AlunoService.VerificarCadastroAluno.VerificarCadastroAlunoService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 @RestController

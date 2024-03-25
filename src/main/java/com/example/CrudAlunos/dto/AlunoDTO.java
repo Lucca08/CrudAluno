@@ -6,12 +6,17 @@ import java.util.stream.Collectors;
 
 import com.example.CrudAlunos.model.Aluno;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+@EqualsAndHashCode
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class AlunoDTO {
     private Long id;
