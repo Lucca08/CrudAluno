@@ -13,7 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface CursoRepository extends JpaRepository<Curso, Long> {
     Optional<Curso> findByNome(String nome);
 
-    List<Curso> findByProfessorId(Long idProfessor);
+    List<Curso> findByProfessorIdDoProfessor(Long idDoProfessor);
+
     List<Curso> findByAlunosId(Long idAluno);
 
     

@@ -28,10 +28,10 @@ public class CriaCursoService {
         }
 
         if (cursoDTO.getProfessor() != null) {
-            if (cursoDTO.getProfessor().getId() != null) {
-                Professor professor = professorRepository.findById(cursoDTO.getProfessor().getId())
+            if (cursoDTO.getProfessor().getIdDoProfessor() != null) {
+                Professor professor = professorRepository.findById(cursoDTO.getProfessor().getIdDoProfessor())
                         .orElseThrow(() -> new RuntimeException(
-                                "Professor não encontrado com ID: " + cursoDTO.getProfessor().getId()));
+                                "Professor não encontrado com ID: " + cursoDTO.getProfessor().getIdDoProfessor()));
                 return criarCursoComProfessor(cursoDTO, professor);
             } else {
                 Professor novoProfessor = new Professor();
@@ -46,7 +46,6 @@ public class CriaCursoService {
 
     private Curso criarCursoComProfessor(CursoDTO cursoDTO, Professor professor) {
         Curso curso = new Curso();
-        curso.setId(cursoDTO.getId());
         curso.setNome(cursoDTO.getNome());
         curso.setProfessor(professor);
         curso.setDescricao(cursoDTO.getDescricao());

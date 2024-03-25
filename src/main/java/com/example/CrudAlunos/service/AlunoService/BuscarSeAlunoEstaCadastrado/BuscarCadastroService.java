@@ -27,7 +27,7 @@ public class BuscarCadastroService {
         if (optionalAluno.isPresent()) {
             Aluno aluno = optionalAluno.get();
             for (Curso curso : aluno.getCursos()) {
-                if (curso.getId() == idCurso) {
+                if (curso.getIdDoCurso() == idCurso) {
                     return true; 
                 }
                 

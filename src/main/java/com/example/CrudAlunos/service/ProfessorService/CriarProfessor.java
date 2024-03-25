@@ -15,7 +15,6 @@ public class CriarProfessor {
 
     public Professor criarProfessor(ProfessorDTO professorDTO) {
         Professor professor = new Professor();
-        professor.setId(professorDTO.getId());
         professor.setNome(professorDTO.getNome());
         return professorRepository.save(professor);
     }

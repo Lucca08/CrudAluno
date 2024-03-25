@@ -24,8 +24,7 @@ public class AlunoDTO {
         this.id = aluno.getId();
         this.nome = aluno.getNome();
         this.cpf = aluno.getCpf();
-        this.matricula = aluno.getMatricula();
-        this.curso = new CursoDTO(aluno.getCursos().get(0));
+        this.matricula = aluno.getMatricula();    
     }
 
 }

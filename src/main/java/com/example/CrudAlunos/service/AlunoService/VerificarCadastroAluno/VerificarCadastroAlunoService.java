@@ -29,8 +29,8 @@ public class VerificarCadastroAlunoService {
             Aluno aluno = alunoRepository.findById(alunoDTO.getId())
                                          .orElseThrow(() -> new RuntimeException("Aluno não encontrado com o ID: " + alunoDTO.getId()));
 
-            Curso curso = cursoRepository.findById(cursoDTO.getId())
-                                     .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + cursoDTO.getId()));
+            Curso curso = cursoRepository.findById(cursoDTO.getIdDoCurso())
+                                     .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + cursoDTO.getIdDoCurso()));
 
             boolean alunoCadastrado = curso.getAlunos().contains(aluno);
             logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() + ": " + alunoCadastrado);

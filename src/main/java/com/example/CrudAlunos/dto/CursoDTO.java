@@ -10,20 +10,28 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CursoDTO {
-    private Long id;
+    private Long idDoCurso;
     private String nome;
     private ProfessorDTO professor;
     private String descricao;
 
-    public CursoDTO(Curso curso) {
-        this.id = curso.getId();
-        this.nome = curso.getNome();
-        this.descricao = curso.getDescricao();
-        
-        if (curso.getProfessor() != null) {
-            this.professor = new ProfessorDTO(curso.getProfessor());
-        } else {
-            this.professor = null;
-        }
+    public CursoDTO(Long idDoCurso, String nome, ProfessorDTO professor, String descricao) {
+        this.idDoCurso = idDoCurso;
+        this.nome = nome;
+        this.professor = professor;
+        this.descricao = descricao;
     }
+
+    public void setIdDoCurso(Long idDoCurso) {
+        this.idDoCurso = idDoCurso;
+    }
+
+    public CursoDTO(Curso curso) {
+        this.idDoCurso = curso.getIdDoCurso();
+        this.nome = curso.getNome();
+        this.professor = new ProfessorDTO(curso.getProfessor());
+        this.descricao = curso.getDescricao();
+    }
+
+   
 }

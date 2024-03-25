@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProfessorDTO {
-    private Long id;
+    private Long idDoProfessor;
     private String nome;
 
     public ProfessorDTO(Professor professor) {
-        this.id = professor.getId();
+        this.idDoProfessor = professor.getIdDoProfessor();
         this.nome = professor.getNome();
     }
 }

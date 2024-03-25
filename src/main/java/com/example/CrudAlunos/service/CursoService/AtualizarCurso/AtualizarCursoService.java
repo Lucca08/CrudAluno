@@ -18,7 +18,7 @@ public class AtualizarCursoService {
     private CursoRepository cursoRepository;
 
     public Curso atualizarCurso(CursoDTO cursoDTO) {
-        Curso curso = cursoRepository.findById(cursoDTO.getId())
+        Curso curso = cursoRepository.findById(cursoDTO.getIdDoCurso())
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
         curso.setNome(cursoDTO.getNome());

@@ -41,13 +41,13 @@ public class VerificarCadastroAlunoServiceTest {
         alunoDTO.setId(1L);
 
         CursoDTO cursoDTO = new CursoDTO();
-        cursoDTO.setId(1L);
+        cursoDTO.setIdDoCurso(1L);
 
         Aluno aluno = new Aluno();
         aluno.setId(1L);
 
         Curso curso = new Curso();
-        curso.setId(1L);
+        curso.setIdDoCurso(1L);
         curso.getAlunos().add(aluno);
 
         when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));

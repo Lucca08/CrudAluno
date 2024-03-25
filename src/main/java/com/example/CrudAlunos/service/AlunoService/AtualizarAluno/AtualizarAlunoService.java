@@ -25,7 +25,6 @@ public class AtualizarAlunoService {
         Aluno aluno = alunoRepository.findById(alunoDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        // Copia as propriedades do DTO para o objeto Aluno existente
         BeanUtils.copyProperties(alunoDTO, aluno);
 
         logger.info("Atualizando aluno: " + aluno.getNome());

@@ -9,15 +9,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
-   Optional<Professor> findById(Long id);
+public interface ProfessorRepository extends JpaRepository<Professor, Long> {
+   Optional<Professor> findById(Long idDoProfessor);
 
     List<Professor> findAll();
 
     @SuppressWarnings("unchecked")
     Professor save(Professor professor);
 
-    void deleteById(Long id);
+    void deleteById(Long idDoProfessor);
 
 
 

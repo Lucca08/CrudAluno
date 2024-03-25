@@ -34,10 +34,10 @@ public class Aluno {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String cpf;
     
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String matricula;
     
     @JoinTable(name = "aluno_curso", joinColumns = @JoinColumn(name = "aluno_id"), inverseJoinColumns = @JoinColumn(name = "curso_id"))

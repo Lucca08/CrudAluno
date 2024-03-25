@@ -12,13 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
- List<Aluno> findByNome(String nome);
-    
- List<Aluno> findByNomeContainingIgnoreCase(String parteDoNome);
+ List<Aluno> findByNome(String nome); 
  
- List<Aluno> findByNomeContainingIgnoreCaseAndCursosId(String parteDoNome, Long idCurso);
- 
- List<Aluno> findByCursosId(Long idCurso);
-
-Object findByCursosId(int id);
 }

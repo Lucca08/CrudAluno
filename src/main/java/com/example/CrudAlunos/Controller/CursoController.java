@@ -76,7 +76,7 @@ public class CursoController {
     
     private CursoDTO mapToCursoDTO(Curso curso) {
         CursoDTO cursoDTO = new CursoDTO();
-        cursoDTO.setId(curso.getId());
+        cursoDTO.setIdDoCurso(curso.getIdDoCurso());
         cursoDTO.setNome(curso.getNome());
         return cursoDTO;
     }
