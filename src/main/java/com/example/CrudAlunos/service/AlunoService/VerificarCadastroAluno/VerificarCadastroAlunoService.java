@@ -5,8 +5,6 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.CrudAlunos.dto.AlunoDTO;
-import com.example.CrudAlunos.dto.CursoDTO;
 import com.example.CrudAlunos.model.Aluno;
 import com.example.CrudAlunos.model.Curso;
 import com.example.CrudAlunos.repository.AlunoRepository;

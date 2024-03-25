@@ -1,6 +1,6 @@
 package com.example.CrudAlunos.TesteAlunoService.TestVerificaCadastro;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.example.CrudAlunos.dto.AlunoDTO;
@@ -50,11 +51,10 @@ public class VerificarCadastroAlunoServiceTest {
         curso.setIdDoCurso(1L);
         curso.getAlunos().add(aluno);
 
-        when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
-        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        Mockito.when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
+        Mockito.when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
 
-        boolean alunoCadastrado = verificarCadastroAlunoService.verificarSeAlunoEstaCadastrado(alunoDTO, cursoDTO);
-
+        boolean alunoCadastrado = verificarCadastroAlunoService.verificarSeAlunoEstaCadastrado(1L, 1L);
         assertTrue(alunoCadastrado);
     }
 }

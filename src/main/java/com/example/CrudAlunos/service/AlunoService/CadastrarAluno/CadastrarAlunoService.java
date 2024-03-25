@@ -1,5 +1,4 @@
 package com.example.CrudAlunos.service.AlunoService.CadastrarAluno;
-
 import com.example.CrudAlunos.dto.AlunoDTO;
 import com.example.CrudAlunos.model.Aluno;
 import com.example.CrudAlunos.model.Curso;
@@ -22,6 +21,16 @@ public class CadastrarAlunoService {
     @Autowired
     private CursoRepository cursoRepository;
 
+    // Método setter para o repositório de aluno
+    public void setAlunoRepository(AlunoRepository alunoRepository) {
+        this.alunoRepository = alunoRepository;
+    }
+
+    // Método setter para o repositório de curso
+    public void setCursoRepository(CursoRepository cursoRepository) {
+        this.cursoRepository = cursoRepository;
+    }
+
     @Transactional
     public Aluno cadastrarAluno(AlunoDTO alunoDTO) {
         Aluno aluno = new Aluno();
@@ -29,16 +38,12 @@ public class CadastrarAlunoService {
         aluno.setCpf(alunoDTO.getCpf());
         aluno.setMatricula(alunoDTO.getMatricula());
         
-        // Salvar o aluno no banco de dados
         Aluno alunoSalvo = alunoRepository.save(aluno);
 
-        // Verificar se o curso está presente no DTO do aluno
         if (alunoDTO.getCurso() != null) {
-            // Buscar o curso pelo ID presente no DTO do aluno
             Curso curso = cursoRepository.findById(alunoDTO.getCurso().getIdDoCurso())
                                           .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + alunoDTO.getCurso().getIdDoCurso()));
             
-            // Adicionar o aluno ao curso e salvar o curso
             curso.getAlunos().add(alunoSalvo);
             cursoRepository.save(curso);
         }

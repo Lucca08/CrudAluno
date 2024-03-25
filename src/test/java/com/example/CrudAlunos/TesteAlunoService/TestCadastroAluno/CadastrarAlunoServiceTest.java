@@ -1,67 +1,73 @@
-// package com.example.CrudAlunos.TesteAlunoService.TestCadastroAluno;
+package com.example.CrudAlunos.TesteAlunoService.TestCadastroAluno;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.mockito.ArgumentMatchers.any;
-// import static org.mockito.Mockito.mock;
-// import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-// import java.util.Optional;
+import java.util.Optional;
 
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-// import com.example.CrudAlunos.dto.AlunoDTO;
-// import com.example.CrudAlunos.model.Aluno;
-// import com.example.CrudAlunos.model.Curso;
-// import com.example.CrudAlunos.repository.AlunoRepository;
-// import com.example.CrudAlunos.repository.CursoRepository;
-// import com.example.CrudAlunos.service.AlunoService.CadastrarAluno.CadastrarAlunoService;
-// import com.example.CrudAlunos.Stub.StubAlunos;
-// import com.example.CrudAlunos.Stub.StubCurso;
+import com.example.CrudAlunos.dto.AlunoDTO;
+import com.example.CrudAlunos.dto.CursoDTO;
+import com.example.CrudAlunos.model.Aluno;
+import com.example.CrudAlunos.model.Curso;
+import com.example.CrudAlunos.repository.AlunoRepository;
+import com.example.CrudAlunos.repository.CursoRepository;
+import com.example.CrudAlunos.service.AlunoService.CadastrarAluno.CadastrarAlunoService;
+import com.example.CrudAlunos.Stub.StubAlunos;
+import com.example.CrudAlunos.Stub.StubCurso;
 
-// public class CadastrarAlunoServiceTest {
-//     private CursoRepository cursoRepository;
-//     private AlunoRepository alunoRepository;
-//     private CadastrarAlunoService cadastrarAlunoService;
+public class CadastrarAlunoServiceTest {
+    private CursoRepository cursoRepository;
+    private AlunoRepository alunoRepository;
+    private CadastrarAlunoService cadastrarAlunoService;
 
-//     @BeforeEach
-//     public void setUp() {
-//         cursoRepository = mock(CursoRepository.class);
-//         alunoRepository = mock(AlunoRepository.class);
-//         cadastrarAlunoService = new CadastrarAlunoService();
-//     }
+    @BeforeEach
+    public void setUp() {
+        cursoRepository = mock(CursoRepository.class);
+        alunoRepository = mock(AlunoRepository.class);
+        cadastrarAlunoService = new CadastrarAlunoService();
+        cadastrarAlunoService.setAlunoRepository(alunoRepository);
+        cadastrarAlunoService.setCursoRepository(cursoRepository);
+    }
 
-//     @Test
-// public void testCadastrarAluno_Success() throws Exception {
-//     AlunoDTO alunoDTO = new AlunoDTO();
-//     alunoDTO.setNome("Lucca");
+    @Test
+    public void testCadastrarAluno_Success() throws Exception {
+        AlunoDTO alunoDTO = new AlunoDTO();
+        alunoDTO.setNome("Lucca");
+        alunoDTO.setCurso(new CursoDTO(1L, "Curso de Teste", null, null)); // Simulate DTO with course ID
 
-//     Curso curso = StubCurso.createCursoStub();
+        Curso curso = StubCurso.createCursoStub();
 
-//     when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
 
-//     Aluno alunoSalvo = StubAlunos.AlunoStub1();
-//     when(alunoRepository.save(any(Aluno.class))).thenReturn(alunoSalvo);
+        Aluno alunoSalvo = StubAlunos.AlunoStub1();
+        when(alunoRepository.save(any(Aluno.class))).thenReturn(alunoSalvo);
 
-//     alunoSalvo.getCursos().add(curso);
+        alunoSalvo.getCursos().add(curso);
 
-//     Aluno alunoCadastrado = cadastrarAlunoService.cadastrarAluno(alunoDTO);
+        Aluno alunoCadastrado = cadastrarAlunoService.cadastrarAluno(alunoDTO);
 
-//     assertEquals(StubAlunos.AlunoStub1().getNome(), alunoCadastrado.getNome());
-//     assertEquals(curso.getId(), alunoCadastrado.getCursos().get(0).getId());
-// }
+        assertEquals(StubAlunos.AlunoStub1().getNome(), alunoCadastrado.getNome());
+        assertEquals(curso.getIdDoCurso(), alunoCadastrado.getCursos().get(0).getIdDoCurso());
+    }
 
-// @Test
-// public void testCadastrarAluno_CourseNotFound() {
-//     AlunoDTO alunoDTO = new AlunoDTO();
-//     alunoDTO.setNome("Maria");
+    @Test
+    public void testCadastrarAluno_CourseNotFound() {
+        AlunoDTO alunoDTO = new AlunoDTO();
+        alunoDTO.setNome("Maria");
+        alunoDTO.setCurso(new CursoDTO(1L, "Curso de Teste", null, null)); // Simulate DTO with course ID
 
-//     when(cursoRepository.findById(1L)).thenReturn(Optional.empty());
+        when(cursoRepository.findById(1L)).thenReturn(Optional.empty());
 
-//     Exception exception = org.junit.jupiter.api.Assertions.assertThrows(Exception.class, () -> {
-//         cadastrarAlunoService.cadastrarAluno(alunoDTO);
-//     });
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            cadastrarAlunoService.cadastrarAluno(alunoDTO);
+        });
 
-//     assertEquals("Curso não encontrado", exception.getMessage());
-// }
-// }
+        assertEquals("Curso não encontrado com o ID: 1", exception.getMessage());
+    }
+}
