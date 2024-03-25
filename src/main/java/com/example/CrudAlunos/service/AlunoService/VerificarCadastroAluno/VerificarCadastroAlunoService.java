@@ -24,15 +24,18 @@ public class VerificarCadastroAlunoService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public boolean verificarSeAlunoEstaCadastrado(AlunoDTO alunoDTO, CursoDTO cursoDTO) {
+    public boolean verificarSeAlunoEstaCadastrado(long id, long idCurso) {
         try {
-            Aluno aluno = alunoRepository.findById(alunoDTO.getId())
-                                         .orElseThrow(() -> new RuntimeException("Aluno não encontrado com o ID: " + alunoDTO.getId()));
+            Aluno aluno = alunoRepository.findById(id)
+                                         .orElseThrow(() -> new RuntimeException("Aluno não encontrado com o ID: " + id)) ;
 
-            Curso curso = cursoRepository.findById(cursoDTO.getIdDoCurso())
-                                     .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + cursoDTO.getIdDoCurso()));
+            Curso curso = cursoRepository.findById(idCurso)
+                                     .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + idCurso));
 
-            boolean alunoCadastrado = curso.getAlunos().contains(aluno);
+            boolean alunoCadastrado = !curso.getAlunos().stream()
+                                                .filter(a -> a.getId().equals(aluno.getId()))
+                                                .toList().isEmpty();
+
             logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() + ": " + alunoCadastrado);
 
             return alunoCadastrado;

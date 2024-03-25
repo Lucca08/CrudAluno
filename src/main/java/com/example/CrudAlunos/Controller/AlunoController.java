@@ -39,7 +39,8 @@ public class AlunoController {
                            ExcluirAlunoService excluirAlunoService, 
                            AtualizarAlunoService atualizarAlunoService,
                            VerificarCadastroAlunoService verificarCadastroAluno,
-                           SairDoCursoService sairDoCursoService) {
+                           SairDoCursoService sairDoCursoService
+                           ) {
         this.cadastrarAlunoService = cadastrarAlunoService;
         this.excluirAlunoService = excluirAlunoService;
         this.atualizarAlunoService = atualizarAlunoService;
@@ -47,10 +48,10 @@ public class AlunoController {
         this.sairDoCursoService = sairDoCursoService;
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<AlunoDTO> cadastrarAluno(@RequestBody AlunoDTO alunoDTO) {
-        Aluno aluno = cadastrarAlunoService.cadastrarAluno(alunoDTO);
-        return new ResponseEntity<>(mapToAlunoDTO(aluno), HttpStatus.CREATED);
+    Aluno aluno = cadastrarAlunoService.cadastrarAluno(alunoDTO);
+    return new ResponseEntity<>(mapToAlunoDTO(aluno), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{alunoId}")
@@ -67,13 +68,13 @@ public class AlunoController {
 
 
     @DeleteMapping("/{alunoId}/curso/{cursoId}")
-    public ResponseEntity<Void> sairDoCurso(@RequestBody AlunoDTO alunoDTO,@PathVariable Long idCurso) {
-        sairDoCursoService.sairDoCurso(alunoDTO, idCurso);
+    public ResponseEntity<Void> sairDoCurso(@RequestBody AlunoDTO alunoDTO) {
+        sairDoCursoService.sairDoCurso(alunoDTO);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{alunoId}/curso/{cursoId}")
-    public ResponseEntity<Boolean> verificarAlunoNoCurso(@RequestBody AlunoDTO alunoDTO,@PathVariable CursoDTO idCurso) {
+    public ResponseEntity<Boolean> verificarAlunoNoCurso(@PathVariable("alunoId") long alunoDTO,@PathVariable("cursoId") long idCurso) {
         boolean alunoNoCurso = verificarCadastroAluno.verificarSeAlunoEstaCadastrado(alunoDTO, idCurso);
         return new ResponseEntity<>(alunoNoCurso, HttpStatus.OK);
     }

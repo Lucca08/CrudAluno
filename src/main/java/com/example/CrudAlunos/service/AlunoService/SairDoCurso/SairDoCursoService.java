@@ -25,15 +25,21 @@ public class SairDoCursoService {
     private CursoRepository cursoRepository;
 
     @Transactional
-    public void sairDoCurso(AlunoDTO alunoDTO, Long idCurso) {
-        Aluno aluno = alunoRepository.findById(alunoDTO.getId())
-                                      .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
-        Curso curso = cursoRepository.findById(idCurso)
-                                      .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+    public void sairDoCurso(AlunoDTO alunoDTO) {
+        try {
+            Aluno aluno = alunoRepository.findById(alunoDTO.getId())
+                                         .orElseThrow(() -> new RuntimeException("Aluno não encontrado com o ID: " + alunoDTO.getId()));
 
-        logger.info("Removendo aluno do curso: " + aluno.getNome() + " do curso: " + curso.getNome());
+            Curso curso = cursoRepository.findById(alunoDTO.getCurso().getIdDoCurso())
+                                        .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + alunoDTO.getCurso().getIdDoCurso()));
 
-        curso.getAlunos().remove(aluno);
-        cursoRepository.save(curso);
+            curso.getAlunos().remove(aluno);
+            cursoRepository.save(curso);
+
+            logger.info("Aluno " + aluno.getNome() + " removido do curso " + curso.getNome());
+        } catch (Exception e) {
+            logger.severe("Erro ao remover aluno do curso: " + e.getMessage());
+            throw e;
+        }
     }
 }
