@@ -44,7 +44,9 @@ public class Aluno {
     @ManyToMany
     private List<Curso> cursos = new ArrayList<>();
     
-    
+    public List<Curso> getCursos() {
+        return this.cursos;
+    }
 
 
 }

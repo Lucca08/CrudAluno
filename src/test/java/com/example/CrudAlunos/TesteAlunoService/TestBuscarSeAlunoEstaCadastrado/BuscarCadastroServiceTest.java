@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,18 +29,17 @@ public class BuscarCadastroServiceTest {
         alunoRepository = mock(AlunoRepository.class);
         buscarCadastroService = new BuscarCadastroService(alunoRepository);
     }
-
     @Test
     public void testVerificarAlunoNoCurso_AlunoPresenteNoCurso() {
         Aluno aluno = StubAlunos.AlunoStub1();
         Curso curso = StubCurso.createCursoStub();
-
-        aluno.getCursos().add(curso);
-
+        aluno.setId(1L); // Definindo um ID válido para o aluno
+        
         when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
-
-        assertTrue(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(), 1L));
+    
+        assertTrue(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(), 1L));    
     }
+    
 
     @Test
     public void testVerificarAlunoNoCurso_AlunoNaoPresenteNoCurso() {

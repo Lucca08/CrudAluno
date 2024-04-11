@@ -40,7 +40,7 @@
 //     public void testCriarProfessor() throws JsonProcessingException {
 //         ProfessorDTO professorDTO = new ProfessorDTO();
 //         professorDTO.setNome("Professor Teste");
-//         professorDTO.setId(1L);
+//         professorDTO.setIdDoProfessor(1L);
 
 //         given()
 //                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -72,12 +72,12 @@
 //     public void testCriarCurso() throws JsonProcessingException {
 //     CursoDTO cursoDTO = new CursoDTO();
 //     cursoDTO.setNome("Curso Teste");
-//     cursoDTO.setId(1L);
+//     cursoDTO.setIdDoCurso(1L);
 //     cursoDTO.setDescricao("Descrição do curso teste");
 
 //     ProfessorDTO professorDTO = new ProfessorDTO();
 //     professorDTO.setNome("Professor Teste");
-//     professorDTO.setId(1L);
+//     professorDTO.setIdDoProfessor(1L);
 //     cursoDTO.setProfessor(professorDTO);
 
 //     given()

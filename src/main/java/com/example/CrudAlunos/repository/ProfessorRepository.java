@@ -19,6 +19,12 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
     void deleteById(Long idDoProfessor);
 
+    void delete(Professor professor);
+
+    boolean existsById(Long idDoProfessor);
+
+    
+
 
 
 }

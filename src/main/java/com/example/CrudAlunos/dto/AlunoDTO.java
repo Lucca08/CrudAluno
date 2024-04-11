@@ -1,9 +1,5 @@
 package com.example.CrudAlunos.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.example.CrudAlunos.model.Aluno;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @EqualsAndHashCode
 @Getter
@@ -29,9 +24,6 @@ public class AlunoDTO {
         this.id = aluno.getId();
         this.nome = aluno.getNome();
         this.cpf = aluno.getCpf();
-        this.matricula = aluno.getMatricula();    
-    }
-
-    
-
+        this.matricula = aluno.getMatricula();  
+        }
 }

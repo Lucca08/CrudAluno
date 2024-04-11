@@ -39,8 +39,7 @@ public class CadastrarAlunoServiceTest {
     public void testCadastrarAluno_Success() throws Exception {
         AlunoDTO alunoDTO = new AlunoDTO();
         alunoDTO.setNome("Lucca");
-        alunoDTO.setCurso(new CursoDTO(1L, "Curso de Teste", null, null)); // Simulate DTO with course ID
-
+        alunoDTO.setCurso(new CursoDTO(1L, "Curso de Teste", null, null)); 
         Curso curso = StubCurso.createCursoStub();
 
         when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
@@ -70,4 +69,25 @@ public class CadastrarAlunoServiceTest {
 
         assertEquals("Curso não encontrado com o ID: 1", exception.getMessage());
     }
+
+    @Test
+    public void testCadastrarAluno_AlreadyEnrolled() {
+        AlunoDTO alunoDTO = new AlunoDTO();
+        alunoDTO.setNome("Maria");
+        alunoDTO.setCurso(new CursoDTO(1L, "Curso de Teste", null, null)); // Simulate DTO with course ID
+        Curso curso = StubCurso.createCursoStub();
+
+        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+
+        Aluno alunoSalvo = StubAlunos.AlunoStub1();
+        alunoSalvo.getCursos().add(curso);
+        when(alunoRepository.save(any(Aluno.class))).thenReturn(alunoSalvo);
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            cadastrarAlunoService.cadastrarAluno(alunoDTO);
+        });
+
+        assertEquals("Aluno já matriculado no curso", exception.getMessage());
+    }
+
 }
