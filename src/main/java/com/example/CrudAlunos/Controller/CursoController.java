@@ -10,7 +10,7 @@ import com.example.CrudAlunos.service.CursoService.CriarCurso.CriaCursoService;
 import com.example.CrudAlunos.service.CursoService.ExcluirCurso.ExcluirCursoService;
 import com.example.CrudAlunos.service.CursoService.VerTodosOsAlunosDoCurso.VerAlunosDoCursoService;
 import com.example.CrudAlunos.service.CursoService.VerTodosOsCursos.VerTodosOsCursos;
-import com.example.CrudAlunos.service.ProfessorService.CriarProfessor;
+import com.example.CrudAlunos.service.ProfessorService.ProfessorService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class CursoController {
     private final CriaCursoService criarCursoService;
     private final ExcluirCursoService excluirCursoService;
     private final AtualizarCursoService atualizarCursoService;
-    private final CriarProfessor professorService;
+    private final ProfessorService professorService;
     
 
     @Autowired
@@ -38,7 +38,7 @@ public class CursoController {
                            CriaCursoService criarCursoService,
                            ExcluirCursoService excluirCursoService,
                            AtualizarCursoService atualizarCursoService,
-                           CriarProfessor professorService) {
+                           ProfessorService professorService) {
         this.verTodosOsCursosService = verTodosOsCursosService;
         this.verAlunosDoCursoService = verAlunosDoCursoService;
         this.criarCursoService = criarCursoService;

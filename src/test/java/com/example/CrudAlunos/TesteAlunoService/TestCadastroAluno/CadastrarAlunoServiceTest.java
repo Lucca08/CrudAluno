@@ -72,22 +72,31 @@ public class CadastrarAlunoServiceTest {
 
     @Test
     public void testCadastrarAluno_AlreadyEnrolled() {
+        // Configurar DTO do aluno
         AlunoDTO alunoDTO = new AlunoDTO();
         alunoDTO.setNome("Maria");
-        alunoDTO.setCurso(new CursoDTO(1L, "Curso de Teste", null, null)); // Simulate DTO with course ID
+        alunoDTO.setCurso(new CursoDTO(1L, "Curso de Teste", null, null)); // Simular DTO com ID do curso
+    
+        // Simular o curso sendo encontrado pelo repositório
         Curso curso = StubCurso.createCursoStub();
-
         when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
-
-        Aluno alunoSalvo = StubAlunos.AlunoStub1();
-        alunoSalvo.getCursos().add(curso);
-        when(alunoRepository.save(any(Aluno.class))).thenReturn(alunoSalvo);
-
+    
+        // Simular um aluno já matriculado no curso
+        Aluno alunoJaMatriculado = new Aluno();
+        alunoJaMatriculado.setNome("João");
+        alunoJaMatriculado.getCursos().add(curso);
+    
+        // Simular a resposta do repositório ao verificar se o aluno já está matriculado no curso
+        when(alunoRepository.existsAlunoByCursosContains(curso)).thenReturn(true);
+    
+        // Executar o método e esperar uma exceção ser lançada
         Exception exception = assertThrows(RuntimeException.class, () -> {
             cadastrarAlunoService.cadastrarAluno(alunoDTO);
         });
-
+    
+        // Verificar se a mensagem de exceção esperada é lançada
         assertEquals("Aluno já matriculado no curso", exception.getMessage());
     }
-
+    
 }
+    

@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import java.util.List; 
 
 import com.example.CrudAlunos.dto.AlunoDTO;
 import com.example.CrudAlunos.dto.CursoDTO;
+import com.example.CrudAlunos.dto.ProfessorDTO;
 import com.example.CrudAlunos.model.Aluno;
 import com.example.CrudAlunos.model.Curso;
 import com.example.CrudAlunos.service.AlunoService.AtualizarAluno.AtualizarAlunoService;
@@ -79,18 +82,27 @@ public class AlunoController {
         return new ResponseEntity<>(alunoNoCurso, HttpStatus.OK);
     }
 
+   
+
     private AlunoDTO mapToAlunoDTO(Aluno aluno) {
         AlunoDTO alunoDTO = new AlunoDTO();
         alunoDTO.setId(aluno.getId());
         alunoDTO.setNome(aluno.getNome());
         alunoDTO.setCpf(aluno.getCpf());
         alunoDTO.setMatricula(aluno.getMatricula());
-
-        if (!aluno.getCursos().isEmpty()) {
-            Curso curso = aluno.getCursos().get(0);
-            alunoDTO.setCurso(new CursoDTO(curso));
+    
+        List<CursoDTO> cursosDTO = new ArrayList<>();
+        for (Curso curso : aluno.getCursos()) {
+            CursoDTO cursoDTO = new CursoDTO();
+            cursoDTO.setIdDoCurso(curso.getIdDoCurso());
+            cursoDTO.setNome(curso.getNome());
+            cursoDTO.setProfessor(new ProfessorDTO(curso.getProfessor()));
+            cursoDTO.setDescricao(curso.getDescricao());
+            cursosDTO.add(cursoDTO);
         }
-
+        alunoDTO.setCursos(cursosDTO);
+    
         return alunoDTO;
     }
+    
 }

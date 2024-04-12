@@ -8,7 +8,7 @@ import com.example.CrudAlunos.model.Professor;
 import com.example.CrudAlunos.repository.ProfessorRepository;
 
 @Service
-public class CriarProfessor {
+public class ProfessorService {
 
     @Autowired
     private ProfessorRepository professorRepository;

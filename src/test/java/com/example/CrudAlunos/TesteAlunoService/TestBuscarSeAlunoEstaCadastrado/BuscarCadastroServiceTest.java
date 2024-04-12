@@ -5,9 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,17 +30,20 @@ public class BuscarCadastroServiceTest {
         alunoRepository = mock(AlunoRepository.class);
         buscarCadastroService = new BuscarCadastroService(alunoRepository);
     }
+
     @Test
-    public void testVerificarAlunoNoCurso_AlunoPresenteNoCurso() {
+    void testVerificarAlunoNoCurso_AlunoPresenteNoCurso() {
         Aluno aluno = StubAlunos.AlunoStub1();
         Curso curso = StubCurso.createCursoStub();
-        aluno.setId(1L); // Definindo um ID válido para o aluno
-        
+        List<Curso> cursos = new ArrayList<>();
+        cursos.add(curso);
+        aluno.setCursos(cursos);
+
         when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
-    
-        assertTrue(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(), 1L));    
+
+        assertTrue(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(aluno), 1L));
+
     }
-    
 
     @Test
     public void testVerificarAlunoNoCurso_AlunoNaoPresenteNoCurso() {
@@ -48,7 +52,7 @@ public class BuscarCadastroServiceTest {
 
         when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
 
-        assertFalse(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(), 2L));
+        assertFalse(buscarCadastroService.verificarAlunoNoCurso(new AlunoDTO(aluno), 2L));
     }
 
     @Test
