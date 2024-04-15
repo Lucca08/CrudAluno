@@ -1,6 +1,8 @@
 package com.example.CrudAlunos.service.AlunoService;
 
 import com.example.CrudAlunos.dto.AlunoDTO;
+import com.example.CrudAlunos.exception.AlunoJaMatriculadoException;
+import com.example.CrudAlunos.exception.AlunoNaoEncontradoException;
 import com.example.CrudAlunos.model.Aluno;
 import com.example.CrudAlunos.model.Curso;
 import com.example.CrudAlunos.repository.AlunoRepository;
@@ -11,29 +13,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
 public class AlunoService {
-    public static final Logger logger = Logger.getLogger(AlunoService.class.getName());
-    public static final String Aluno_NAO_ENCONTRADA = "Aluno não encontrado";
+    private static final Logger logger = Logger.getLogger(AlunoService.class.getName());
+    private static final String ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
+    private static final String ALUNO_JA_MATRICULADO = "Aluno já matriculado no curso";
 
-    
     @Autowired
     private AlunoRepository alunoRepository;
 
     @Autowired
     private CursoRepository cursoRepository;
-
-    // Método setter para o repositório de aluno
-    public void setAlunoRepository(AlunoRepository alunoRepository) {
-        this.alunoRepository = alunoRepository;
-    }
-
-    // Método setter para o repositório de curso
-    public void setCursoRepository(CursoRepository cursoRepository) {
-        this.cursoRepository = cursoRepository;
-    }
 
     @Transactional
     public Aluno cadastrarAluno(AlunoDTO alunoDTO) {
@@ -41,17 +35,17 @@ public class AlunoService {
         aluno.setNome(alunoDTO.getNome());
         aluno.setCpf(alunoDTO.getCpf());
         aluno.setMatricula(alunoDTO.getMatricula());
-        
+
         Aluno alunoSalvo = alunoRepository.save(aluno);
 
         if (alunoDTO.getCurso() != null) {
             Curso curso = cursoRepository.findById(alunoDTO.getCurso().getIdDoCurso())
-                                          .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + alunoDTO.getCurso().getIdDoCurso()));
-            
+                    .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + alunoDTO.getCurso().getIdDoCurso()));
+
             if (curso.getAlunos().contains(alunoSalvo)) {
-                throw new RuntimeException("Aluno já matriculado no curso");
+                throw new AlunoJaMatriculadoException(ALUNO_JA_MATRICULADO);
             }
-        
+
             curso.getAlunos().add(alunoSalvo);
             cursoRepository.save(curso);
         }
@@ -62,7 +56,7 @@ public class AlunoService {
     @Transactional
     public Aluno atualizarAluno(AlunoDTO alunoDTO) {
         Aluno aluno = alunoRepository.findById(alunoDTO.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
+                .orElseThrow(() -> new AlunoNaoEncontradoException(ALUNO_NAO_ENCONTRADO));
 
         BeanUtils.copyProperties(alunoDTO, aluno);
 
@@ -76,59 +70,17 @@ public class AlunoService {
         }
     }
 
-    public boolean verificarAlunoNoCurso(AlunoDTO alunoDTO, Long idCurso) {
-        Aluno aluno = alunoRepository.findById(alunoDTO.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
-
-        Curso curso = cursoRepository.findById(idCurso)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
-
-        if (curso.getAlunos().contains(aluno)) {
-            logger.info("Aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome());
-            return true;
-        }
-
-        logger.info("Aluno " + aluno.getNome() + " não está cadastrado no curso " + curso.getNome());
-
-        return false;
-    }
-
-    @Transactional
-    public Aluno deletarAluno(Long alunoId) {
-        logger.info("Deletando aluno com ID: " + alunoId);
-        return alunoRepository.findById(alunoId)
-                .map(pessoa -> {
-                    alunoRepository.delete(pessoa);
-                    return pessoa;
-                })
-                .orElseThrow(() -> new RuntimeException(Aluno_NAO_ENCONTRADA + " ID: " + alunoId));
-    }
-
-    @Transactional
-    public void sairDoCurso(AlunoDTO alunoDTO) {
-        Aluno aluno = alunoRepository.findById(alunoDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
-
-        Curso curso = cursoRepository.findById(alunoDTO.getCurso().getIdDoCurso())
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + alunoDTO.getCurso().getIdDoCurso()));
-
-        curso.getAlunos().remove(aluno);
-        cursoRepository.save(curso);
-
-        logger.info("Aluno " + aluno.getNome() + " saiu do curso " + curso.getNome());
-    }
-
-    public boolean verificarSeAlunoEstaCadastrado(long id, long idCurso) {
+    public boolean verificarAlunoNoCurso(long alunoId, long idCurso) {
         try {
-            Aluno aluno = alunoRepository.findById(id)
-                                         .orElseThrow(() -> new RuntimeException("Aluno não encontrado com o ID: " + id)) ;
+            Aluno aluno = alunoRepository.findById(alunoId)
+                    .orElseThrow(() -> new AlunoNaoEncontradoException("Aluno não encontrado com o ID: " + alunoId));
 
             Curso curso = cursoRepository.findById(idCurso)
-                                      .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + idCurso));
+                    .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + idCurso));
 
             boolean alunoCadastrado = !curso.getAlunos().stream()
-                                                .filter(a -> a.getId().equals(aluno.getId()))
-                                                .toList().isEmpty();
+                    .filter(a -> a.getId().equals(aluno.getId()))
+                    .toList().isEmpty();
 
             logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() + ": " + alunoCadastrado);
 
@@ -139,6 +91,47 @@ public class AlunoService {
         }
     }
 
+    @Transactional
+    public Aluno deletarAluno(Long alunoId) {
+        logger.info("Deletando aluno com ID: " + alunoId);
+        return alunoRepository.findById(alunoId)
+                .map(pessoa -> {
+                    alunoRepository.delete(pessoa);
+                    return pessoa;
+                })
+                .orElseThrow(() -> new AlunoNaoEncontradoException(ALUNO_NAO_ENCONTRADO + " ID: " + alunoId));
+    }
 
+    @Transactional
+    public void sairDoCurso(long alunoId, long cursoId) {
+        Aluno aluno = alunoRepository.findById(alunoId)
+                .orElseThrow(() -> new AlunoNaoEncontradoException(ALUNO_NAO_ENCONTRADO + " ID: " + alunoId));
+
+        Curso curso = cursoRepository.findById(cursoId)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + cursoId));
+
+        curso.getAlunos().remove(aluno);
+        cursoRepository.save(curso);
+    }
+
+    public boolean verificarSeAlunoEstaCadastrado(long id, long idCurso) {
+        try {
+            Aluno aluno = alunoRepository.findById(id)
+                    .orElseThrow(() -> new AlunoNaoEncontradoException("Aluno não encontrado com o ID: " + id));
+
+            Curso curso = cursoRepository.findById(idCurso)
+                    .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + idCurso));
+
+            boolean alunoCadastrado = !curso.getAlunos().stream()
+                    .filter(a -> a.getId().equals(aluno.getId()))
+                    .toList().isEmpty();
+
+            logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() + ": " + alunoCadastrado);
+
+            return alunoCadastrado;
+        } catch (Exception e) {
+            logger.severe("Erro ao verificar se o aluno está cadastrado no curso: " + e.getMessage());
+            throw e;
+        }
+    }
 }
-
