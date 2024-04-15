@@ -151,16 +151,22 @@ public class CursoService {
         }).collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CursoDTO> listarTodosCursos() {
         List<Curso> cursos = cursoRepository.findAll();
         logger.info("Listando todos os cursos: " + cursos.size() + " encontrados");
-
+    
         return cursos.stream()
-                     .map(CursoDTO::new)
+                     .map(curso -> {
+                         CursoDTO cursoDTO = new CursoDTO();
+                         cursoDTO.setIdDoCurso(curso.getIdDoCurso());
+                         cursoDTO.setNome(curso.getNome());
+                         cursoDTO.setDescricao(curso.getDescricao());
+                         return cursoDTO;
+                     })
                      .collect(Collectors.toList());
     }
-
+    
 
     
 }

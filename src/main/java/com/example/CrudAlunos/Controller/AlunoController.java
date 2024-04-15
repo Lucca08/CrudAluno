@@ -1,7 +1,6 @@
 package com.example.CrudAlunos.Controller;
 
 import com.example.CrudAlunos.dto.AlunoDTO;
-import com.example.CrudAlunos.dto.CursoDTO;
 import com.example.CrudAlunos.exception.AlunoJaMatriculadoException;
 import com.example.CrudAlunos.exception.AlunoNaoEncontradoException;
 import com.example.CrudAlunos.exception.CursoNaoEncontradoException;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/alunos")

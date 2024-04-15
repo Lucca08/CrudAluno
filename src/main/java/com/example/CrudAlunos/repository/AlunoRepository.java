@@ -1,8 +1,6 @@
 package com.example.CrudAlunos.repository;
 
-import com.example.CrudAlunos.dto.AlunoDTO;
 import com.example.CrudAlunos.model.Aluno;
-import com.example.CrudAlunos.model.Curso;
 
 import java.util.List;
 import java.util.Optional;

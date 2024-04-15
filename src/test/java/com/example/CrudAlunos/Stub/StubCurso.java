@@ -7,6 +7,7 @@ public class StubCurso {
     
     public static Curso createCursoStub() {
         Curso curso = new Curso();
+        curso.setIdDoCurso(1L);
         curso.setNome("Curso de Artes");
         curso.setDescricao("Artistas renomados ensinam tecnicas de pintura e escultura");
         return curso;
@@ -15,6 +16,7 @@ public class StubCurso {
     public static Curso createCursoStub2() {
         Curso curso = new Curso();
 
+        curso.setIdDoCurso(2L);
         curso.setNome("Curso de Musica");
         curso.setDescricao("Musicos renomados ensinam tecnicas de canto e instrumentos musicais");
         return curso;

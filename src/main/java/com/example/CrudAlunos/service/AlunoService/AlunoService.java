@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -28,6 +26,13 @@ public class AlunoService {
 
     @Autowired
     private CursoRepository cursoRepository;
+    
+    @Autowired
+    public AlunoService(AlunoRepository alunoRepository, CursoRepository cursoRepository) {
+        this.alunoRepository = alunoRepository;
+        this.cursoRepository = cursoRepository;
+    }
+    
 
     @Transactional
     public Aluno cadastrarAluno(AlunoDTO alunoDTO) {
@@ -70,6 +75,7 @@ public class AlunoService {
         }
     }
 
+    @Transactional
     public boolean verificarAlunoNoCurso(long alunoId, long idCurso) {
         try {
             Aluno aluno = alunoRepository.findById(alunoId)
@@ -114,6 +120,8 @@ public class AlunoService {
         cursoRepository.save(curso);
     }
 
+
+    @Transactional
     public boolean verificarSeAlunoEstaCadastrado(long id, long idCurso) {
         try {
             Aluno aluno = alunoRepository.findById(id)

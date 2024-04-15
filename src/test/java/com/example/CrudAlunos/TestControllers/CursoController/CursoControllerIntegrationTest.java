@@ -1,105 +1,97 @@
-// package com.example.CrudAlunos.TestControllers.CursoController;
+package com.example.CrudAlunos.TestControllers.CursoController;
 
-// import com.example.CrudAlunos.dto.CursoDTO;
-// import com.example.CrudAlunos.dto.ProfessorDTO;
-// import com.fasterxml.jackson.core.JsonProcessingException;
-// import com.fasterxml.jackson.databind.ObjectMapper;
-// import io.restassured.RestAssured;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-// import org.springframework.boot.test.context.SpringBootTest;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.MediaType;
-// import org.springframework.test.annotation.DirtiesContext;
-// import org.springframework.test.context.ActiveProfiles;
-// import org.springframework.test.context.TestPropertySource;
+import com.example.CrudAlunos.dto.CursoDTO;
+import com.example.CrudAlunos.dto.ProfessorDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
-// import static io.restassured.RestAssured.given;
-// import static org.hamcrest.Matchers.*;
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:application-test.properties")
+public class CursoControllerIntegrationTest {
 
-// @SpringBootTest
-// @AutoConfigureMockMvc
-// @ActiveProfiles("test")
-// @TestPropertySource(locations = "classpath:application-test.properties")
-// public class CursoControllerIntegrationTest {
+    @Autowired
+    private ObjectMapper objectMapper;
 
-//     @Autowired
-//     private ObjectMapper objectMapper;
+    @BeforeEach
+    public void setup() {
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = 8080;
+    }
 
-//     @BeforeEach
-//     public void setup() {
-//         RestAssured.baseURI = "http://localhost";
-//         RestAssured.port = 8080;
-//     }
+    @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+    public void testCriarProfessor() throws JsonProcessingException {
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setNome("Professor Teste");
 
-//     @Test
-//     @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-//     public void testCriarProfessor() throws JsonProcessingException {
-//         ProfessorDTO professorDTO = new ProfessorDTO();
-//         professorDTO.setNome("Professor Teste");
-//         professorDTO.setIdDoProfessor(1L);
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(objectMapper.writeValueAsString(professorDTO))
+                .when()
+                .post("/professores")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("nome", equalTo("Professor Teste"));
+    }
 
-//         given()
-//                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                 .body(objectMapper.writeValueAsString(professorDTO))
-//                 .when()
-//                 .post("/professores")
-//                 .then()
-//                 .statusCode(HttpStatus.CREATED.value())
-//                 .body("nome", equalTo("Professor Teste"));
-//     }
+    @Test
+    public void testCriarProfessorSemNome() throws JsonProcessingException {
+        ProfessorDTO professorDTO = new ProfessorDTO();
 
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(objectMapper.writeValueAsString(professorDTO))
+                .when()
+                .post("/professores")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", equalTo("Nome é obrigatório"));
+    }
 
-//     @Test
-//     public void testCriarProfessorSemNome() throws JsonProcessingException {
-//         ProfessorDTO professorDTO = new ProfessorDTO();
+    @Test
+    public void testCriarCurso() throws JsonProcessingException {
+        CursoDTO cursoDTO = new CursoDTO();
+        cursoDTO.setNome("Curso Teste");
+        cursoDTO.setDescricao("Descrição do curso teste");
 
-//         given()
-//                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                 .body(objectMapper.writeValueAsString(professorDTO))
-//                 .when()
-//                 .post("/professores")
-//                 .then()
-//                 .statusCode(HttpStatus.BAD_REQUEST.value())
-//                 .body("message", equalTo("Nome é obrigatório"));
-//     }
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setNome("Professor Teste");
+        cursoDTO.setProfessor(professorDTO);
 
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(objectMapper.writeValueAsString(cursoDTO))
+                .when()
+                .post("/cursos/criarcursos")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("nome", equalTo("Curso Teste"));
+    }
 
-//     @Test
-//     public void testCriarCurso() throws JsonProcessingException {
-//     CursoDTO cursoDTO = new CursoDTO();
-//     cursoDTO.setNome("Curso Teste");
-//     cursoDTO.setIdDoCurso(1L);
-//     cursoDTO.setDescricao("Descrição do curso teste");
-
-//     ProfessorDTO professorDTO = new ProfessorDTO();
-//     professorDTO.setNome("Professor Teste");
-//     professorDTO.setIdDoProfessor(1L);
-//     cursoDTO.setProfessor(professorDTO);
-
-//     given()
-//             .contentType(MediaType.APPLICATION_JSON_VALUE)
-//             .body(objectMapper.writeValueAsString(cursoDTO))
-//     .when()
-//             .post("/cursos/criarcursos")
-//     .then()
-//             .statusCode(HttpStatus.CREATED.value())
-//             .body("nome", equalTo("Curso Teste"));
-// }
-
-
-//     @Test
-//     public void testListarTodosCursos() {
-//         given()
-//             .contentType(MediaType.APPLICATION_JSON_VALUE)
-//         .when()
-//             .get("/cursos")
-//         .then()
-//             .statusCode(HttpStatus.OK.value())
-//             .body("$", hasSize(greaterThan(0)));
-//     }
-
-// }
+    @Test
+    public void testListarTodosCursos() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/cursos")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("$", hasSize(greaterThan(0)));
+    }
+}

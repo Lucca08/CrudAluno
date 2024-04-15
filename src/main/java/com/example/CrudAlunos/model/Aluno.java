@@ -1,8 +1,6 @@
 package com.example.CrudAlunos.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
