@@ -1,10 +1,6 @@
 package com.example.CrudAlunos.exception;
 
 import com.example.CrudAlunos.dto.ErrorResponse;
-import com.example.CrudAlunos.exception.AlunoJaMatriculadoException;
-import com.example.CrudAlunos.exception.AlunoNaoEncontradoException;
-import com.example.CrudAlunos.exception.CursoNaoEncontradoException;
-import com.example.CrudAlunos.exception.ProfessorNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
