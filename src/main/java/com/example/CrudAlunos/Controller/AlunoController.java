@@ -63,10 +63,8 @@ public class AlunoController {
     } catch (AlunoNaoEncontradoException | CursoNaoEncontradoException e) {
         return ResponseEntity.badRequest().build();
     }
-}
+    }
 
-
-    
 
     @GetMapping("/{alunoId}/cursos/{cursoId}")
     public ResponseEntity<Boolean> verificarAlunoNoCurso(@PathVariable long alunoId, @PathVariable long cursoId) {

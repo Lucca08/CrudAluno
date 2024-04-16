@@ -3,6 +3,8 @@ package com.example.CrudAlunos.Controller;
 import com.example.CrudAlunos.dto.AlunoDTO;
 import com.example.CrudAlunos.dto.CursoDTO;
 import com.example.CrudAlunos.dto.ProfessorDTO;
+import com.example.CrudAlunos.exception.CursoJaExistenteException;
+import com.example.CrudAlunos.exception.CursoNaoEncontradoException;
 import com.example.CrudAlunos.model.Curso;
 import com.example.CrudAlunos.model.Professor;
 import com.example.CrudAlunos.service.CursoService.CursoService;
@@ -50,10 +52,14 @@ public class CursoController {
    
     @PostMapping("/cursos/criarcursos")
     public ResponseEntity<CursoDTO> criarCurso(@RequestBody CursoDTO cursoDTO) {
+    try {
         Curso curso = cursoService.criarCurso(cursoDTO);
         CursoDTO cursoDTOCriado = mapToCursoDTO(curso);
         return new ResponseEntity<>(cursoDTOCriado, HttpStatus.CREATED);
+    } catch (CursoJaExistenteException e) {
+        return ResponseEntity.badRequest().build();
     }
+}
 
     private CursoDTO mapToCursoDTO(Curso curso) {
         CursoDTO cursoDTO = new CursoDTO();
@@ -72,8 +78,13 @@ public class CursoController {
 
     @DeleteMapping("/{idCurso}")
     public ResponseEntity<Void> excluirCurso(@PathVariable Long idCurso) {
-        cursoService.excluirCurso(idCurso);
-        return new ResponseEntity<>(HttpStatus.OK);
+            try {
+                cursoService.excluirCurso(idCurso);
+                return ResponseEntity.ok().build();
+            } catch (CursoNaoEncontradoException e) {
+                return ResponseEntity.notFound().build();
+        }
     }
+   
     
 }

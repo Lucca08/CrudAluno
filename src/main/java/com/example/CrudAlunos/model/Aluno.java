@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,12 +32,16 @@ public class Aluno {
     private Long id;
     
     @Column(nullable = false)
+    @NotBlank(message = "O campo nome é obrigatório")
     private String nome;
 
     @Column(nullable = false)
+    @NotBlank(message = "O campo cpf é obrigatório")
+    @Size(min = 11, max = 11, message = "O CPF deve ter exatamente 11 caracteres")
     private String cpf;
     
     @Column(nullable = false)
+    @NotBlank(message = "O campo matrícula é obrigatório")
     private String matricula;
     
     @JoinTable(name = "aluno_curso", joinColumns = @JoinColumn(name = "aluno_id"), inverseJoinColumns = @JoinColumn(name = "curso_id"))

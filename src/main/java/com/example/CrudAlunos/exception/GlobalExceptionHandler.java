@@ -21,12 +21,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    @ExceptionHandler(CursoNaoEncontradoException.class)
-    public ResponseEntity<ErrorResponse> handleCursoNaoEncontradoException(CursoNaoEncontradoException ex) {
-        ErrorResponse errorResponse = new ErrorResponse("Curso não encontrado");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
-
     @ExceptionHandler(ProfessorNaoEncontradoException.class)
     public ResponseEntity<ErrorResponse> handleProfessorNaoEncontradoException(ProfessorNaoEncontradoException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Professor não encontrado");
@@ -37,5 +31,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(Throwable ex) {
         ErrorResponse errorResponse = new ErrorResponse("Ocorreu um erro interno no servidor");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(CursoJaExistenteException.class)
+    public ResponseEntity<ErrorResponse> handleCursoJaExistenteException(CursoJaExistenteException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Curso já existente");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(CursoNaoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> handleCursoNaoEncontradoException(CursoNaoEncontradoException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Curso não encontrado");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }
