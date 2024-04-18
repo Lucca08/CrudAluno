@@ -129,7 +129,7 @@ public class AlunoServiceTest {
     }
 
     @Test
-    @DisplayName("Testar verificar aluno no curso")
+    @DisplayName("Testar verificar aluno no curso_COM SUCESSO")
     public void testVerificarAlunoNoCurso(){
         Aluno aluno = new Aluno();
         aluno.setId(1L);
@@ -148,6 +148,28 @@ public class AlunoServiceTest {
         boolean alunoNoCurso = alunoService.verificarAlunoNoCurso(1L, 1L);
 
         assertTrue(alunoNoCurso);
+
+    }
+
+    @Test
+    @DisplayName("Testar verificar aluno no curso_SEM SUCESSO")
+    public void testVerificarAlunoNoCursoSemSucesso(){
+        Aluno aluno = new Aluno();
+        aluno.setId(1L);
+        aluno.setNome("João");
+        aluno.setCpf("12345678900");
+        aluno.setMatricula("20240001");
+
+        Curso curso = new Curso();
+        curso.setIdDoCurso(1L);
+        curso.setNome("Curso Teste");
+
+        when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
+        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+
+        boolean alunoNoCurso = alunoService.verificarAlunoNoCurso(1L, 1L);
+
+        assertFalse(alunoNoCurso);
 
     }
 

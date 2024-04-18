@@ -88,7 +88,8 @@ public class AlunoService {
                     .filter(a -> a.getId().equals(aluno.getId()))
                     .toList().isEmpty();
 
-            logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() + ": " + alunoCadastrado);
+            logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() + 
+            ": " + alunoCadastrado);
 
             return alunoCadastrado;
         } catch (Exception e) {
@@ -134,7 +135,8 @@ public class AlunoService {
                     .filter(a -> a.getId().equals(aluno.getId()))
                     .toList().isEmpty();
 
-            logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() + ": " + alunoCadastrado);
+            logger.info("Verificando se o aluno " + aluno.getNome() + " está cadastrado no curso " + curso.getNome() +
+             ": " + alunoCadastrado);
 
             return alunoCadastrado;
         } catch (Exception e) {
